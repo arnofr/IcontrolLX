@@ -7,7 +7,7 @@
 */
 
 /**
-* @class SkeletonWorker
+* @class MemoryWorker
 * @mixes RestWorker
 *
 * @description A simple worker that outlines functions that
@@ -17,7 +17,7 @@
 * instantiated by the @LoaderWorker
 * @constructor
 */
-function SkeletonWorker() {
+function MemoryWorker() {
    this.state = {};
 }
 
@@ -28,7 +28,7 @@ function SkeletonWorker() {
 * or at http://host/mgmt/WORKER_URI_PATH if the worker is public
 * @type {string}
 */
-SkeletonWorker.prototype.WORKER_URI_PATH = "shared/skeleton";
+MemoryWorker.prototype.WORKER_URI_PATH = "shared/skeleton";
 
 /**
 * @optional
@@ -37,14 +37,14 @@ SkeletonWorker.prototype.WORKER_URI_PATH = "shared/skeleton";
 * @default false
 * @type {boolean}
 */
-SkeletonWorker.prototype.isPublic = true;
+MemoryWorker.prototype.isPublic = true;
 
 /**
 * @optional
 * @description specifies the F5 API LifeCycle state for the extension. The default is NO_STATUS.
 * @type {string}
 */
-SkeletonWorker.prototype.apiStatus = "GA";
+MemoryWorker.prototype.apiStatus = "GA";
 
 
 /******************
@@ -61,16 +61,16 @@ SkeletonWorker.prototype.apiStatus = "GA";
 * @param {Function} success callback in case of success
 * @param {Function} error callback in case of error
 */
-SkeletonWorker.prototype.onStart = function(success, error) {
+MemoryWorker.prototype.onStart = function(success, error) {
 
    //if the logic in your onStart implementation encounters and error
    //then call the error callback function, otherwise call the success callback
    var err = false;
    if (err) {
-       this.logger.severe("SkeletonWorker onStart error: something went wrong");
+       this.logger.severe("MemoryWorker onStart error: something went wrong");
        error();
    } else {
-       this.logger.info("SkeletonWorker onStart success");
+       this.logger.info("MemoryWorker onStart success");
        success();
    }
 };
@@ -88,13 +88,13 @@ SkeletonWorker.prototype.onStart = function(success, error) {
 * @param {Object} state object loaded from storage
 * @param {Object|null} errMsg error from loading state from storage
 */
-SkeletonWorker.prototype.onStartCompleted = function (success, error, state, errMsg) {
+MemoryWorker.prototype.onStartCompleted = function (success, error, state, errMsg) {
    if (errMsg) {
-       this.logger.severe("SkeletonWorker onStartCompleted error: something went wrong " + errMsg);
+       this.logger.severe("MemoryWorker onStartCompleted error: something went wrong " + errMsg);
        error();
    }
 
-   this.logger.info("SkeletonWorker state loaded: " + JSON.stringify(state));
+   this.logger.info("MemoryWorker state loaded: " + JSON.stringify(state));
    success();
 };
 
@@ -107,7 +107,7 @@ SkeletonWorker.prototype.onStartCompleted = function (success, error, state, err
 * @description handle onGet HTTP request
 * @param {Object} restOperation
 */
-SkeletonWorker.prototype.onGet = function(restOperation) {
+MemoryWorker.prototype.onGet = function(restOperation) {
    restOperation.setBody(this.state);
    this.completeRestOperation(restOperation);
    return;
@@ -118,7 +118,7 @@ SkeletonWorker.prototype.onGet = function(restOperation) {
 * @description handle onPost HTTP request
 * @param {Object} restOperation
 */
-SkeletonWorker.prototype.onPost = function(restOperation) {
+MemoryWorker.prototype.onPost = function(restOperation) {
    this.state = restOperation.getBody();
    this.completeRestOperation(restOperation);
 };
@@ -128,18 +128,18 @@ SkeletonWorker.prototype.onPost = function(restOperation) {
 * @description handle onPut HTTP request
 * @param {Object} restOperation
 */
-SkeletonWorker.prototype.onPut = function(restOperation) {
+MemoryWorker.prototype.onPut = function(restOperation) {
    this.state = restOperation.getBody();
    this.completeRestOperation(restOperation);
 };
 
 
 /**
-* @optional 
+* @optional
 * @description handle onPatch HTTP request
 * @param {Object} restOperation
 */
-SkeletonWorker.prototype.onPatch = function(restOperation) {
+MemoryWorker.prototype.onPatch = function(restOperation) {
    this.state = restOperation.getBody();
    this.completeRestOperation(restOperation);
 };
@@ -150,7 +150,7 @@ SkeletonWorker.prototype.onPatch = function(restOperation) {
 * @description handle onDelete HTTP request
 * @param {Object} restOperation
 */
-SkeletonWorker.prototype.onDelete = function(restOperation) {
+MemoryWorker.prototype.onDelete = function(restOperation) {
    this.state = {};
    this.completeRestOperation(restOperation.setBody(this.state));
 };
@@ -164,7 +164,7 @@ SkeletonWorker.prototype.onDelete = function(restOperation) {
 * @description Get example model for this REST resource
 * @returns {Object} object model example
 */
-SkeletonWorker.prototype.getExampleState = function () {
+MemoryWorker.prototype.getExampleState = function () {
    return {
        content: "sample data",
        integerContent: 1,
@@ -173,4 +173,4 @@ SkeletonWorker.prototype.getExampleState = function () {
 };
 
 
-module.exports = SkeletonWorker;
+module.exports = MemoryWorker;
