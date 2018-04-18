@@ -28,7 +28,7 @@ function MemoryWorker() {
 * or at http://host/mgmt/WORKER_URI_PATH if the worker is public
 * @type {string}
 */
-MemoryWorker.prototype.WORKER_URI_PATH = "shared/skeleton";
+MemoryWorker.prototype.WORKER_URI_PATH = "extension/demolab/memory";
 
 /**
 * @optional
@@ -108,9 +108,19 @@ MemoryWorker.prototype.onStartCompleted = function (success, error, state, errMs
 * @param {Object} restOperation
 */
 MemoryWorker.prototype.onGet = function(restOperation) {
-   restOperation.setBody(this.state);
-   this.completeRestOperation(restOperation);
-   return;
+  // Set the version number variable
+  var o = new Object();
+  o.version = "1.1";
+
+  // Add the persisted "Data" attribute to the response object
+  o.Data = this.state.Data;
+
+  // Send a message to the logging system
+  this.logger.info("current version is " + o.version);
+  // Set the response payload to the prepared object
+  restOperation.setBody(o);
+  // complete the REST operation and return control to the caller
+  this.completeRestOperation(restOperation);
 };
 
 /**
@@ -119,7 +129,11 @@ MemoryWorker.prototype.onGet = function(restOperation) {
 * @param {Object} restOperation
 */
 MemoryWorker.prototype.onPost = function(restOperation) {
-   this.state = restOperation.getBody();
+    // Access the Data attribute in the POST body
+   var newData = restOperation.getBody().Data;
+   // Store the value of Data in the state's Data attribute
+   this.state.Data = newData;
+   // Complete the PUT operation
    this.completeRestOperation(restOperation);
 };
 
@@ -129,21 +143,25 @@ MemoryWorker.prototype.onPost = function(restOperation) {
 * @param {Object} restOperation
 */
 MemoryWorker.prototype.onPut = function(restOperation) {
-   this.state = restOperation.getBody();
-   this.completeRestOperation(restOperation);
+  // Access the Data attribute in the POST body
+ var newData = restOperation.getBody().Data;
+ // Store the value of Data in the state's Data attribute
+ this.state.Data = newData;
+ // Complete the PUT operation
+ this.completeRestOperation(restOperation);
 };
 
-
 /**
-* @optional test
+* @optional
 * @description handle onPatch HTTP request
 * @param {Object} restOperation
 */
+/*
 MemoryWorker.prototype.onPatch = function(restOperation) {
    this.state = restOperation.getBody();
    this.completeRestOperation(restOperation);
 };
-
+*/
 
 /**
 * @optional
