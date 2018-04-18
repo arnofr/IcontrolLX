@@ -135,7 +135,7 @@ SkeletonWorker.prototype.onPut = function(restOperation) {
 
 
 /**
-* @optional
+* @optional  tt
 * @description handle onPatch HTTP request
 * @param {Object} restOperation
 */
