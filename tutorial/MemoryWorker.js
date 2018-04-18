@@ -135,7 +135,7 @@ MemoryWorker.prototype.onPut = function(restOperation) {
 
 
 /**
-* @optional
+* @optional test
 * @description handle onPatch HTTP request
 * @param {Object} restOperation
 */
